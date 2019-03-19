@@ -1,0 +1,22 @@
+create a pipeline Job
+node{  --- on which our job has to run 
+    stage('Scm checkout')  {
+--- use pipeline syntax option select git:Git option to write git credentials
+       git credentialsID: 'git-creds', url:'give ur git url',branch:'dev'
+    }
+    stage('MVN package'){
+    ------ select shell script and wirte mvn clean package or  select tool:use a tool from pre-defined
+         def mvnHOME=
+         def mvnCMD="$(mvnHome}/bin/mvn"
+        sh "${mvnCMD} clean package"
+    }
+    stage ('Build docker image') {
+       sh 'docker build -t kammana/my-app:2.0.0  .'
+    }
+    stage ('push docker image') {
+       sh 'docker push kammana/my-app:2.0.0'
+    }
+}
+    
+        
+
